@@ -4,10 +4,18 @@ const liens = require("../model/liens");
 var QRCode = require("qrcode");
 var url = require("url");
 //Set up default mongoose connection
-var mongoDB = "mongodb://localhost:27017/liste_url";
+const MongoClient = require('mongodb').MongoClient;
+var uri = "mongodb+srv://test:xSXhQSneQZkM2jr@cluster0-bjxhj.mongodb.net/liste_url?retryWrites=true&w=majority";
 var ObjectId = mongoose.Types.ObjectId;
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true
+//const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
+MongoClient.connect(uri, function(err, client) {
+  if(err) {
+       console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+  }
+  console.log('Connected...');
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
 });
 
 controller.list = async (req, res) => {
@@ -50,7 +58,7 @@ controller.add = async (req, res) => {
 };
 
 controller.encode = (req, res) => {
-  let lien = "192.168.3.88/voir/" + req.params.item;
+  let lien = "/voir/" + req.params.item;
 
   QRCode.toDataURL(lien, function(err, qrurl) {
     res.redirect(
