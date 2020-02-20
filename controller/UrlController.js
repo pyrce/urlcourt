@@ -4,7 +4,7 @@ const liens = require("../model/liens");
 var QRCode = require("qrcode");
 var url = require("url");
 //Set up default mongoose connection
-const MongoClient = require('mongodb').MongoClient;
+const {MongoClient} = require('mongodb');
 var uri = "mongodb+srv://test:xSXhQSneQZkM2jr@cluster0-bjxhj.mongodb.net/liste_url?retryWrites=true&w=majority";
 var ObjectId = mongoose.Types.ObjectId;
 //const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
@@ -13,7 +13,6 @@ MongoClient.connect(uri, function(err, client) {
        console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
   }
   console.log('Connected...');
-  const collection = client.db("test").collection("devices");
   // perform actions on the collection object
   client.close();
 });
