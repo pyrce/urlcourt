@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Lora|Merriweather|Lato|Quicksand|Roboto&display=swap" rel="stylesheet">
+        
+        <div class="container">
+            <div class="jumbotron text-center"> <h1 class="display-4">listes de liens</h1> </div>
+<ul id="items">
+ <% for(var i=0;i<data.length;i++){ %>
+         <li>
+             <span class="liens"> <%=data[i].url %>  :</span>
+ <span> <a href="/encode/<%=data[i].nom %>"><%=data[i].nom %></a></span>
+</li> 
+    <% }%>
+</ul>
+<ul  class="pagination">
+ 
+<% for(j=0;j<=pages;j++){%>
+<li class="page-item"> <a href="/<%=j%>" ><%=j%></a></li>
+
+<%}%></ul>
+<a href="/ajout" class="btn btn-primary float-right">Ajouter</a>
+
+</div>
+<div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+ <% if(typeof qr_cde!="undefied") {%>
+          <img src= "<%=qr_code%>" id="monqrcode" />
+          <%}%>
+        </div>
+      
+      </div>
+
+
+<style>
+#items li:nth-child(odd){
+    background-color:lime;
+}
+#items li{
+    list-style: none;
+    height: 5%;
+    display: flex;
+    align-items: center;
+}
+.container{
+    width:45%;
+}
+h1{
+    font-family:Merriweather;
+}
+.liens{
+    margin:0 10px;
+    font-family:Lato;
+}
+.item{
+    margin-left: 10px;
+    font-family:Merriweather;
+}
+img{
+  height: 30%;
+width: 70%;
+display:flex;
+justify-self: center;
+align-items: center;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+</style>
+<script>
+
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var inp = document.getElementById("monqrcode");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+inp.onchange = function() {
+  modal.style.display = "block";
+}
+if(inp.src.match(/^data/) ){
+  inp.onchange();
+}
+
+</script>
