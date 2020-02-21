@@ -6,5 +6,5 @@ router.get("/", operationController.list);
 router.get("/ajout", operationController.ajout);
 router.get("/encode/:item", operationController.encode);
 router.post("/add", operationController.add);
-router.get("voir/:id", operationController.voir);
+router.get("/voir/:id", operationController.voir);
 module.exports = router;
