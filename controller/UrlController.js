@@ -61,8 +61,10 @@ controller.encode = (req, res) => {
 
 controller.voir = (req, res) => {
   let id = req.params.id.split("-")[1];
+
   liens.findOne({ _id: id }).then(lien => {
-    res.redirect("http://" + lien.url);
+    console.log(lien);
+    res.redirect(lien.url);
   });
 };
 

@@ -98,11 +98,11 @@ crossorigin="anonymous"></script>
 
 var modal = document.getElementById("myModal");
 function encode(item){
-  console.log(item)
+
 $.get(
 '/encode/'+item
 ,res=>{
-  console.log("renndu")
+ 
  // document.getElementById("monqrcode").src=res;
  $("#monqrcode").attr("src",res);
  $("#myModal").css({display:"block"});
