@@ -5,14 +5,13 @@ var QRCode = require("qrcode");
 var url = require("url");
 //Set up default mongoose connection
 const MongoClient = require('mongodb').MongoClient;
-var uri = "mongodb+srv://test:kypUJjM6s44F6wH@cluster0-bjxhj.mongodb.net/liste_url";
+
 var ObjectId = mongoose.Types.ObjectId;
-const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true  });
+var base=typeof process.env.DB_URI!="undefined" ?process.env.DB_URI :"mongodb://localhost:27017/liste_url";
+const client = new MongoClient(base, { useNewUrlParser: true,useUnifiedTopology: true  });
    client.connect();
 
-
-
-controller.list = async (req, res) => {
+controller.list =  (req, res) => {
  var currentpage =
     typeof req.params.page != "undefined" || req.params.page > 0
       ? req.params.page
