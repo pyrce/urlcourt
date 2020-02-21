@@ -66,7 +66,7 @@ controller.voir =  (req, res) => {
    if(lien.url.match(/^[http|https]/))
     res.redirect(lien.url);
 else
-    res.redirect("http://"+llien.url);
+    res.redirect("http://"+lien.url);
  });
 
 
