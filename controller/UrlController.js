@@ -63,8 +63,8 @@ controller.voir =  (req, res) => {
   let id = req.params.id.split("-")[1];
 
  liens.findOne({ _id: id }).then(lien=> {
-   if(lien.match(/^[http|https]/))
-    res.redirect(ien.url);
+   if(lien.url.match(/^[http|https]/))
+    res.redirect(lien.url);
 else
     res.redirect("http://"+llien.url);
  });
