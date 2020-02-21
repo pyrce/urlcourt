@@ -10,7 +10,7 @@
  <% for(var i=0;i<data.length;i++){ %>
          <li>
              <span class="liens"> <%=data[i].url %>  :</span>
- <span> <a href="/encode/<%=data[i].nom %>"><%=data[i].nom %></a></span>
+ <span> <a onclick="encode('<%=data[i].nom %>');" href="#"><%=data[i].nom %></a></span>
 </li> 
     <% }%>
 </ul>
@@ -29,7 +29,7 @@
         <div class="modal-content">
           <span class="close">&times;</span>
  <% if(typeof qr_cde!="undefied") {%>
-          <img src= "<%=qr_code%>" id="monqrcode" />
+          <img src= "" id="monqrcode" />
           <%}%>
         </div>
       
@@ -90,10 +90,29 @@ align-items: center;
   width: 80%;
 }
 </style>
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
 <script>
 
 var modal = document.getElementById("myModal");
+function encode(item){
+  console.log(item)
+$.get(
+'/encode/'+item
+,res=>{
+  console.log("renndu")
+ // document.getElementById("monqrcode").src=res;
+ $("#monqrcode").attr("src",res);
+ $("#myModal").css({display:"block"});
+ //modal.style.display = "block"
+// $("#monqrcode").trigger("change");
+ // document.getElementById("monqrcode").onchange();
+});
 
+
+}
 // Get the button that opens the modal
 var inp = document.getElementById("monqrcode");
 
@@ -106,8 +125,6 @@ span.onclick = function() {
 inp.onchange = function() {
   modal.style.display = "block";
 }
-if(inp.src.match(/^data/) ){
-  inp.onchange();
-}
+
 
 </script>

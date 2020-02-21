@@ -4,44 +4,40 @@ const liens = require("../model/liens");
 var QRCode = require("qrcode");
 var url = require("url");
 //Set up default mongoose connection
-const {MongoClient} = require('mongodb');
-var uri = "mongodb+srv://test:xSXhQSneQZkM2jr@cluster0-bjxhj.mongodb.net/liste_url?retryWrites=true&w=majority";
+const MongoClient = require('mongodb').MongoClient;
+var uri = "mongodb+srv://test:kypUJjM6s44F6wH@cluster0-bjxhj.mongodb.net/liste_url";
 var ObjectId = mongoose.Types.ObjectId;
-//const client = new MongoClient(uri, { useNewUrlParser: true ,useUnifiedTopology: true});
-MongoClient.connect(uri, function(err, client) {
-  if(err) {
-       console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
-  }
-  console.log('Connected...');
-  // perform actions on the collection object
-  client.close();
-});
+const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true  });
+   client.connect();
+
+
 
 controller.list = async (req, res) => {
-  currentpage =
+ var currentpage =
     typeof req.params.page != "undefined" || req.params.page > 0
       ? req.params.page
       : 0;
   //   var qr_code=await QRCode.toString(req.query.monlien);
-  var qr_code = req.query.monlien;
+
+
+var monliens=client.db().collection("liens");
 
   var perPage = 5,
     page = Math.max(0, currentpage);
-  liens
+    monliens
     .find({})
     .limit(perPage)
-    .skip(perPage * page)
-    .lean()
-    .exec(function(err, listes) {
-      liens.countDocuments().exec(function(err, count) {
+    .skip(perPage * page).toArray().then(datas=>{
+
+    var count=datas.length;
+    //  liens.countDocuments().exec(function(err, count) {
+        
         res.render("liste", {
-          data: listes,
+          data: datas,
           pages: count / perPage,
-          qr_code: qr_code,
-          QRCode: QRCode
         });
       });
-    });
+   
 };
 controller.ajout = (req, res) => {
   res.render("ajout");
@@ -59,13 +55,8 @@ controller.add = async (req, res) => {
 controller.encode = (req, res) => {
   let lien = "/voir/" + req.params.item;
 
-  QRCode.toDataURL(lien, function(err, qrurl) {
-    res.redirect(
-      url.format({
-        pathname: "/",
-        query: { monlien: qrurl }
-      })
-    );
+  QRCode.toDataURL(lien, function(err, qurl) {
+    res.send( qurl);
   });
 };
 
