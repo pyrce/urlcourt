@@ -7,7 +7,7 @@ var url = require("url");
 const MongoClient = require('mongodb').MongoClient;
 
 var ObjectId = mongoose.Types.ObjectId;
-var base=typeof process.env.DB_URI!="undefined" ?process.env.DB_URI :"mongodb://localhost:27017/liste_url";
+var base=typeof process.env.MONGODB_URI!="undefined" ?process.env.MONGODB_URI :"mongodb://localhost:27017/liste_url";
 const client = new MongoClient(base, { useNewUrlParser: true,useUnifiedTopology: true  });
    client.connect();
 
