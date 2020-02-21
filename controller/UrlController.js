@@ -8,9 +8,9 @@ const MongoClient = require('mongodb').MongoClient;
 
 var ObjectId = mongoose.Types.ObjectId;
 var base=typeof process.env.MONGODB_URI!="undefined" ?process.env.MONGODB_URI :"mongodb://localhost:27017/liste_url";
-const client = new MongoClient(base, { useNewUrlParser: true,useUnifiedTopology: true  });
-   client.connect();
-
+/*const client = new MongoClient(base, { useNewUrlParser: true,useUnifiedTopology: true  });
+   client.connect();*/
+mongoose.connect(base,{ useNewUrlParser: true,useUnifiedTopology: true  });
 controller.list =  (req, res) => {
  var currentpage =
     typeof req.params.page != "undefined" || req.params.page > 0
@@ -19,14 +19,14 @@ controller.list =  (req, res) => {
   //   var qr_code=await QRCode.toString(req.query.monlien);
 
 
-var monliens=client.db().collection("liens");
+//var monliens=client.db().collection("liens");
 
   var perPage = 5,
     page = Math.max(0, currentpage);
-    monliens
+    liens
     .find({})
     .limit(perPage)
-    .skip(perPage * page).toArray().then(datas=>{
+    .skip(perPage * page).then(datas=>{
 
     var count=datas.length;
     //  liens.countDocuments().exec(function(err, count) {
@@ -52,20 +52,21 @@ controller.add = async (req, res) => {
 };
 
 controller.encode = (req, res) => {
-  let lien = "https://urlcourt.herokuapp.com/voir/" + req.params.item;
+  let lien = "/voir/" + req.params.item;
 
   QRCode.toDataURL(lien, function(err, qurl) {
     res.send( qurl);
   });
 };
 
-controller.voir = (req, res) => {
+controller.voir =  (req, res) => {
   let id = req.params.id.split("-")[1];
 
-  liens.findOne({ _id: id }).then(lien => {
-    console.log(lien);
-    res.redirect(lien.url);
-  });
+ liens.findOne({ _id: id }).then(lien=> {
+    res.redirect("http://"+lien.url);
+ });
+
+
 };
 
 module.exports = controller;
