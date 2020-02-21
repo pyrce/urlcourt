@@ -52,7 +52,7 @@ controller.add = async (req, res) => {
 };
 
 controller.encode = (req, res) => {
-  let lien = "/voir/" + req.params.item;
+  let lien = "https://urlcourt.herokuapp.com/voir/" + req.params.item;
 
   QRCode.toDataURL(lien, function(err, qurl) {
     res.send( qurl);
@@ -63,7 +63,10 @@ controller.voir =  (req, res) => {
   let id = req.params.id.split("-")[1];
 
  liens.findOne({ _id: id }).then(lien=> {
-    res.redirect("http://"+lien.url);
+   if(lien.match(/^[http|https]/))
+    res.redirect(ien.url);
+else
+    res.redirect("http://"+llien.url);
  });
 
 
