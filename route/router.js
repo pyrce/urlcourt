@@ -2,6 +2,7 @@ const express = require("express");
 const router = express();
 const operationController = require("../controller/UrlController.js");
 
+router.get("/", operationController.list);
 router.get("/:page", operationController.list);
 router.get("/ajout", operationController.ajout);
 router.get("/encode/:item", operationController.encode);
