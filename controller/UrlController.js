@@ -8,20 +8,21 @@ const MongoClient = require("mongodb").MongoClient;
 
 var ObjectId = mongoose.Types.ObjectId;
 var base =
-  typeof process.env.MONGODB_URI != "undefined"
-    ? process.env.MONGODB_URI
-    : "mongodb://localhost:27017/liste_url";
-/*const client = new MongoClient(base, { useNewUrlParser: true,useUnifiedTopology: true  });
-   client.connect();*/
-mongoose.connect(base, { useNewUrlParser: true, useUnifiedTopology: true });
-controller.list = (req, res) => {
-  var currentpage =
-    typeof req.params.page != "undefined" || req.params.page > 0
-      ? req.params.page
-      : 0;
-  //   var qr_code=await QRCode.toString(req.query.monlien);
+  typeof process.env.MONGODB_URI != "undefined" ?
+  process.env.MONGODB_URI :
+  "mongodb://localhost:27017/liste_url";
 
-  //var monliens=client.db().collection("liens");
+mongoose.connect(base, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+/*
+*/ 
+controller.list =  (req, res) => {
+  var currentpage =
+    typeof req.params.page != "undefined" || req.params.page > 0 ?
+    req.params.page :
+    0;
 
   var perPage = 5,
     page = Math.max(0, currentpage);
@@ -29,13 +30,12 @@ controller.list = (req, res) => {
     .find({})
     .limit(perPage)
     .skip(perPage * page)
-    .then(datas => {
-      var count = datas.length;
-      //  liens.countDocuments().exec(function(err, count) {
+    .then(async (datas) => {
+      var count = await liens.find({});
 
       res.render("liste", {
         data: datas,
-        pages: count / perPage
+        pages: count.length / perPage
       });
     });
 };
@@ -55,7 +55,7 @@ controller.add = async (req, res) => {
 controller.encode = (req, res) => {
   let lien = "https://urlcourt.herokuapp.com/voir/" + req.params.item;
 
-  QRCode.toDataURL(lien, function(err, qurl) {
+  QRCode.toDataURL(lien, function (err, qurl) {
     res.send(qurl);
   });
 };
@@ -63,7 +63,9 @@ controller.encode = (req, res) => {
 controller.voir = (req, res) => {
   let id = req.params.id.split("-")[1];
 
-  liens.findOne({ _id: id }).then(lien => {
+  liens.findOne({
+    _id: id
+  }).then(lien => {
     if (lien.url.match(/^[http|https]/)) res.redirect(lien.url);
     else res.redirect("http://" + lien.url);
   });
