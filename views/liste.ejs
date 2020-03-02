@@ -6,7 +6,7 @@
         
         <div class="container">
             <div class="jumbotron text-center"> <h1 class="display-4">listes de liens</h1> </div>
-<ul id="items">
+<ul id="items" style="padding-left: 0px;">
  <% for(var i=0;i<data.length;i++){ %>
          <li>
              <span class="liens"> <%=data[i].url %>  :</span>
@@ -14,7 +14,7 @@
 </li> 
     <% }%>
 </ul>
-<ul  class="pagination">
+<ul  class="pagination" >
  
 <% for(j=0;j<=pages;j++){%>
 <li class="page-item"> <a href="/<%=j%>" ><%=j%></a></li>
